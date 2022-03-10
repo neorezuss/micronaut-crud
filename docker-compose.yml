@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  postgresdb:
+    container_name: postgresdb
+    image: postgres:13-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 12345678
+      
+  micronaut-crud-app:
+    container_name: micronaut-crud-app
+    build:
+      context: .
+    ports:
+      - 8080:8080
+    environment:
+      DATASOURCE_URL: jdbc:postgresql://postgresdb:5432/postgres
+      DATASOURCE_USERNAME: user
+      DATASOURCE_PASSWORD: 12345678
+    depends_on:
+      - postgresdb
